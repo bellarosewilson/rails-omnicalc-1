@@ -82,6 +82,6 @@ test:
 production:
   <<: *default
   database: rails_template_production
-  username: rails_template
+  username: student
   password: <%= ENV["updatedpassword"] %>
   encoding: utf8
