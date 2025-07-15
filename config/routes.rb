@@ -1,5 +1,4 @@
 # config/routes.rb
-
 Rails.application.routes.draw do
   root to: 'pages#square'
   get('/square/new', { controller: 'pages', action: 'square' })

@@ -1,70 +1,50 @@
-class PageController < ApplicationController end 
-  def roll_dice(num_dice, num_sides)
-    Array.new(num_dice) { rand(1..num_sides) }
+class PagesController < ApplicationController
+  def square
+    render({ :template => "/square" })
   end
 
-  def calculate_square(number)
-    number ** 2
+  def square_results
+    @number = params[:number].to_f
+    @result = @number ** 2
+    render({ :template => "/square_results" })
   end
 
-  def calculate_square_root(number)
-    Math.sqrt(number)
+  def root
+    render({ :template => "/square_root" })
   end
 
-  def random_number(min, max)
-    rand(min..max)
+  def root_results
+    @number = params[:number].to_f
+    @result = Math.sqrt(@number)
+    render({ :template => "/square_root_results" })
+  end
+
+  def random
+    render({ :template => "/random" })
+  end
+
+  def random_results
+    @min = params[:user_min].to_f
+    @max = params[:user_max].to_f
+    @result = rand(@min..@max)
+    render({ :template => "/random_results" })
+  end
+
+  def payment
+    render({ :template => "/payment" })
+  end
+
+  def payment_results
+    @apr = params[:apr].to_f
+    @years = params[:years].to_i
+    @principal = params[:principal].to_f
+    @monthly_payment = calculate_payment(@apr, @years, @principal)
+    render({ :template => "/payment_results" })
   end
 
   def calculate_payment(apr, years, principal)
     monthly_rate = (apr / 100) / 12
     months = years * 12
     (principal * monthly_rate) / (1 - (1 + monthly_rate) ** -months)
-  end
-
-  get "/" do
-    erb :index
-  end
-
-  get "/square/new" do
-    erb :square
-  end
-
-  get "/square/results" do
-    @number = params[:number].to_f
-    @result = calculate_square(@number)
-    erb :square_results
-  end
-
-  get "/square_root/new" do
-    erb :square_root
-  end
-
-  get "/square_root/results" do
-    @number = params[:number].to_f
-    @result = calculate_square_root(@number)
-    erb :square_root_results
-  end
-
-  get "/random/new" do
-    erb :random
-  end
-
-  get "/random/results" do
-    @min = params[:user_min].to_f
-    @max = params[:user_max].to_f
-    @result = random_number(@min, @max)
-    erb :random_results
-  end
-
-  get "/payment/new" do
-    erb :payment
-  end
-
-  get "/payment/results" do
-    @apr = params[:apr].to_f
-    @years = params[:years].to_i
-    @principal = params[:principal].to_f
-    @monthly_payment = calculate_payment(@apr, @years, @principal)
-    erb :payment_results
   end
 end
